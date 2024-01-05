@@ -42,7 +42,7 @@ const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url);
 
   if (parsedUrl.pathname === "/") {
-    const pathToHtml = `${__dirname}/index.html`;
+    const pathToHtml = `${__dirname}/ui/index.html`;
     fs.readFile(pathToHtml, "utf8", (error, data) => {
       if (error) {
         res.writeHead(500);
