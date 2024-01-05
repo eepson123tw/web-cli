@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON Editor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #jsonDisplay, #jsonDataInput {
+            width: 80%;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 10px;
+            font-family: monospace;
+            color: #333;
+        }
+        #jsonDisplay {
+            height: 150px;
+            overflow-y: scroll;
+            white-space: pre-wrap;
+        }
+        #jsonDataInput {
+            height: 150px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #008cba;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #005f6b;
+        }
+    </style>
+</head>
+<body>
+    <h1>JSON Editor</h1>
+    <div id="jsonDisplay"></div>
+    <textarea id="jsonDataInput"></textarea>
+    <button onclick="updateJson()">Update JSON</button>
+
+    <script>
+        function fetchJsonData() {
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('jsonDisplay').innerText = JSON.stringify(data, null, 2);
+                    document.getElementById('jsonDataInput').value = JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function updateJson() {
+            const data = document.getElementById('jsonDataInput').value;
+            fetch('/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: data,
+            })
+            .then(response => response.json())
+            .then(updatedData => {
+                document.getElementById('jsonDisplay').innerText = JSON.stringify(updatedData, null, 2);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        fetchJsonData();
+    </script>
+</body>
+</html>

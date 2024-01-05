@@ -1,0 +1,17 @@
+{
+  "name": "web-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "init": "npm install -g .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "bin": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.6"
+  }
+}
