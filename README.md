@@ -13,7 +13,7 @@
 1. **啟動服務器**：運行 `index.js` 來啟動您的 JSON 編輯器服務器。
 
    ```bash
-   node index.js --json <路徑/至/您的/json檔案> --port <指定端口號>
+   web-cli --json <路徑/至/您的/json檔案> --port <指定端口號>
    ```
 
 2. **查看和編輯 JSON**：在瀏覽器中訪問 `http://localhost:<指定端口號>` 來開啟 JSON 編輯器。
