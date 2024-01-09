@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>JSON Editor</title>
     <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
@@ -22,18 +27,32 @@
             margin-bottom: 10px;
             border: 1px solid #ccc;
             background-color: #fff;
-            padding: 10px;
             font-family: monospace;
             color: #333;
         }
         #jsonDisplay {
-            height: 150px;
             overflow-y: scroll;
             white-space: pre-wrap;
+            background-color: beige;
         }
         #jsonDataInput {
-            height: 150px;
-            margin-bottom: 20px;
+            height: 200px;
+            /* margin-bottom: 20px; */
+        }
+        li{
+            padding: 10px;
+        }
+        li:not(:last-child){
+            margin-bottom: 10px ;
+        }
+        li[data-level="0"]{
+            background-color: beige;
+        }
+        li[data-level="1"]{
+            background-color: bisque;
+        }
+        li[data-level="2"]{
+            background-color: blanchedalmond;
         }
         button {
             padding: 10px 20px;
@@ -55,11 +74,28 @@
     <button onclick="updateJson()">Update JSON</button>
 
     <script>
+        function createHtmlList(data,currentLevel=0) {
+            let html = '<ul>';
+            for (const key in data ) {
+                html += `<li data-level=${currentLevel}>${key} : `;
+                if (typeof data[key] === 'object' && data[key] !== null) {
+                    // 如果值是对象，递归调用来创建嵌套的列表
+                    html += createHtmlList(data[key], currentLevel + 1);
+                } else {
+                    // 如果值不是对象，直接添加值
+                    html += data[key];
+                }
+                html += '</li>';
+            }
+            html += '</ul>';
+            return html;
+        }
         function fetchJsonData() {
             fetch('/data')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('jsonDisplay').innerText = JSON.stringify(data, null, 2);
+                    
+                    document.getElementById('jsonDisplay').innerHTML = createHtmlList(data);
                     document.getElementById('jsonDataInput').value = JSON.stringify(data, null, 2);
                 })
                 .catch(error => console.error('Error:', error));
@@ -76,7 +112,7 @@
             })
             .then(response => response.json())
             .then(updatedData => {
-                document.getElementById('jsonDisplay').innerText = JSON.stringify(updatedData, null, 2);
+                document.getElementById('jsonDisplay').innerHTML = createHtmlList(updatedData);
             })
             .catch(error => console.error('Error:', error));
         }
